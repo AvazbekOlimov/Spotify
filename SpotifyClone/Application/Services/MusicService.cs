@@ -1,6 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.DTOs.MusicDtos;
 using Application.Interfaces;
+using Azure.Storage.Blobs;
 using Infrastructure.Entities;
 using Infrastructure.Interfaces;
 
@@ -9,6 +10,7 @@ namespace Application.Services;
 public class MusicService(IUnitOfWork unitOfWork) : IMusicService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+   
 
     public async Task AddMusicAsync(AddMusicDto addmusic)
     {
@@ -48,4 +50,6 @@ public class MusicService(IUnitOfWork unitOfWork) : IMusicService
         var model = (Music)updatemusic;
         await _unitOfWork.Music.UpdateAsync(model);
     }
+
+   
 }

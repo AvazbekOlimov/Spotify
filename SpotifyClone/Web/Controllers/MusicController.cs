@@ -8,6 +8,8 @@ namespace Web.Controllers;
 [ApiController]
 public class MusicController(IMusicService musicService) : Controller
 {
+    
+
     private readonly IMusicService _musicService = musicService;
     [HttpGet("getall")]
     public async Task<IActionResult> GetAll()
