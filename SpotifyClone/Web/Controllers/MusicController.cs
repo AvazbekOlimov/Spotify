@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.MusicDtos;
 using Application.Interfaces;
 using Application.Services;
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
@@ -8,7 +9,9 @@ namespace Web.Controllers;
 [ApiController]
 public class MusicController(IMusicService musicService) : Controller
 {
-    
+
+    string accountName = "spotifyblobstorage";
+    string accountKey = "KV17Z9BfnEyvXirbw2VDhP6dO3buQ74+6LRJdxUMgXmH+sHrSDkKFcMORrKRlWpAAxtx62uDktkn+AStXqsbsg==";
 
     private readonly IMusicService _musicService = musicService;
     [HttpGet("getall")]
@@ -45,7 +48,7 @@ public class MusicController(IMusicService musicService) : Controller
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ex.Message); 
+            return StatusCode(500, ex.Message);
         }
     }
     [HttpPut("update")]
@@ -77,5 +80,71 @@ public class MusicController(IMusicService musicService) : Controller
         {
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
+    }
+    [HttpGet("Musics")]
+    public async Task<ActionResult<List<string>>> GetMusicsMusic()
+    {
+        
+        string containerName = "musics";
+
+        var blobServiceClient = new BlobServiceClient($"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net");
+
+        var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+        List<string> blobUrls = new List<string>();
+
+        // List blobs in the container
+        await foreach (var blobItem in containerClient.GetBlobsAsync())
+        {
+            var blobClient = containerClient.GetBlobClient(blobItem.Name);
+            var blobUrl = blobClient.Uri.ToString();
+            blobUrls.Add(blobUrl);
+        }
+
+        return Ok(blobUrls);
+    }
+    [HttpGet("Albums")]
+    public async Task<ActionResult<List<string>>> GetMusicsAlbum()
+    {
+
+        string containerName = "album";
+
+        var blobServiceClient = new BlobServiceClient($"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net");
+
+        var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+        List<string> blobUrls = new List<string>();
+
+        // List blobs in the container
+        await foreach (var blobItem in containerClient.GetBlobsAsync())
+        {
+            var blobClient = containerClient.GetBlobClient(blobItem.Name);
+            var blobUrl = blobClient.Uri.ToString();
+            blobUrls.Add(blobUrl);
+        }
+
+        return Ok(blobUrls);
+    }
+    [HttpGet("Text")]
+    public async Task<ActionResult<List<string>>> GetMusicsText()
+    {
+
+        string containerName = "text";
+
+        var blobServiceClient = new BlobServiceClient($"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net");
+
+        var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+        List<string> blobUrls = new List<string>();
+
+        // List blobs in the container
+        await foreach (var blobItem in containerClient.GetBlobsAsync())
+        {
+            var blobClient = containerClient.GetBlobClient(blobItem.Name);
+            var blobUrl = blobClient.Uri.ToString();
+            blobUrls.Add(blobUrl);
+        }
+
+        return Ok(blobUrls);
     }
 }

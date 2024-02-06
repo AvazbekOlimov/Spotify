@@ -39,6 +39,8 @@ public class MusicService(IUnitOfWork unitOfWork) : IMusicService
         return (MusicDto)music;
     }
 
+
+
     public async Task<List<MusicDto>> GetMusicsAsync()
     {
         var musics = await _unitOfWork.Music.GetAllAsync();
@@ -51,5 +53,5 @@ public class MusicService(IUnitOfWork unitOfWork) : IMusicService
         await _unitOfWork.Music.UpdateAsync(model);
     }
 
-   
+
 }
