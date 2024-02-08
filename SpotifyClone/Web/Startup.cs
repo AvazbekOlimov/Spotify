@@ -55,7 +55,9 @@ namespace Web
 
             #region DbContext
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             #endregion
 
             #region Identity
@@ -120,12 +122,9 @@ namespace Web
 
         public static void AddMiddleware(this WebApplication app)
         {
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
 
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.UseCors(CORS_POLICY);
             app.UseHttpsRedirection();
             app.UseAuthentication();
