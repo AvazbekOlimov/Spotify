@@ -43,6 +43,7 @@ public class MusicDto
             Time = music.Time,
             CreatedDate = music.CreatedDate,
             ViewNumber = music.ViewNumber,
+            SourceUrl = music.SourceUrl,
             AlbumUrl = music.AlbumUrl,
             MusicText = music.MusicText,
             IsFavourite = music.IsFavourite,
